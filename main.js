@@ -1,14 +1,14 @@
-// אתחול Supabase
+// קבועים
 const SUPABASE_URL = 'https://ouuugtgasfbxtrjswlsh.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91dXVndGdhc2ZieHRyanN3bHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYxNjc1MzcsImV4cCI6MjA1MTc0MzUzN30.3-tJuH1CRNjAC7Xq6c6dwGnEoQx4KYGhGLsxO5Xru0k';
 
-// משתנים גלובליים
-let selectedDate = null;
-let adminCalendarInstance = null;
-let currentTestimonial = 0;
-let isTestimonialAnimating = false;
+// אתחול Supabase
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// הגדרת האטרקציות הנוספות
+// אתחול EmailJS
+emailjs.init("HbIpcYDXjdswqgJ1B");
+
+// הגדרת האטרקציות
 const additionalAttractions = [
     {
         title: "בית קפה 'המתומן'",
@@ -24,74 +24,6 @@ const additionalAttractions = [
         title: "בור מים",
         description: "בור מים משופץ, פינת חמד מהממת בין כרמים, לטבילה קרירה בימי הקיץ החמים ושכשוך לאמיצים בעונות הקרות יותר... המקום שופץ לאחרונה ובו דק מרווח, פרגולה, שולחן פיקניק, פינת ישיבה נעימה ופינת מדורה. הבור נקרא ע\"ש דוד יהודה יצחק הי\"ד.",
         location: "2 דקות נסיעה או מסלול הליכה יפיפה של כ-20 דקות מהצימר"
-    },
-    {
-        title: "יקב תום",
-        description: "בחווה חקלאית צמודה לגבעה שוכן יקב בוטיק ובו יינות איכותיים ומגוונים נושאי פרסים בעלי שם עולמי. במקום דיר כבשים והמון אנשים טובים, וכמובן יין מובחר מאדמת הארץ הטובה.",
-        location: "הליכה נעימה בתוך הגבעה עד לחווה של משפ' פניני למרגלות הגבעה",
-        contact: "0527390763",
-        contactName: "מיטל פניני"
-    },
-    {
-        title: "סטודיו בוץ",
-        description: "הסטודיו של בתיה ארדשטיין בו תוכלו למצוא תוצרת קרמיקה מקומית, יפיפיה, איכותית ומיוחדת בעבודת יד. במקום סדנאות קרמיקה לזוגות ומשפחות (בתיאום מראש) וכמובן אפשרות קנייה של ספלים, בקבוקי שמן זית, כלי הגשה ועוד ועוד...",
-        location: "גבעת שיר חדש, כ-8 דקות נסיעה",
-        contact: "0523445019",
-        contactName: "בתיה"
-    },
-    {
-        title: "עיסויים לנשים",
-        description: "אסתי המוכשרת מעלת ידי הזהב, מעסה מקצועית, מגיעה עד אלינו לצימר ובמחיר מיוחד לאורחים! מעניקה חוויה מרגיעה, נעימה ובלתי נשכחת של עיסוי מפנק ומשחרר... מעסה גם הריוניות.",
-        contact: "0528745591",
-        contactName: "אסתי לויתן"
-    },
-    {
-        title: "sunflower studio",
-        description: "הסטודיו של ציפורה - סטודיו מיוחד לנרות, סבונים ושלל מוצרי טיפוח טבעיים ואיכותיים בעבודת יד! במקום ניתן לרכוש מוצרים בודדים ומארזים מפנקים ביותר. בקרוב סדנאות זוגיות ומשפחתיות",
-        location: "גבעת אלומות, כ-10 דקות נסיעה",
-        contact: "0538264688",
-        contactName: "ציפורה"
-    },
-    {
-        title: "שירת העשבים",
-        description: "מאפיית בוטיק על קצה ההר - מידיה הקסומות של עמליה יוצאים מידי יום מאפים טריים מקמח ארץ ישראלי מובחר, מטבלים צבעוניים ומתוקים מיוחדים... מארזים איכותיים לזוגות ומשפחות וקנייה של מאפים מטריפים מידי יום.",
-        location: "גבעת שיר חדש, כ-7 דקות נסיעה",
-        contact: "0584107396",
-        contactName: "עמליה חושן"
-    },
-    {
-        title: "מגשי פירות מעוצבים",
-        description: "מגשי פירות מעוצבים מפנקים עם משלוחים עד לצימר!",
-        location: "יצהר",
-        contact: "0545430891",
-        contactName: "רבקה לוי"
-    },
-    {
-        title: "סדנת ליבוד",
-        description: "סדנאות ליבוד לזוגות ומשפחות - ליבוד היא מלאכה קדומה בצמר. בעזרת מחט מיוחדת ניצור תמונות ציוריות וססגוניות. אין צורך בניסיון קודם!",
-        location: "חוות גלעד",
-        contact: "0542126869",
-        contactName: "איתיאל בראלי"
-    },
-    {
-        title: "יקב כביר",
-        description: "מרכז המבקרים של היקב כולל מסעדה חלבית, המשלימה את חווית היין. התפריט שם דגש על מרכיבים עונתיים, טריים ואיכותיים.",
-        location: "אלון מורה, כ-25 דקות נסיעה",
-        hours: "שני 10:00-16:00, שלישי-רביעי 10:00-16:00 ו-19:00-22:00, חמישי 10:00-16:00, שישי בראנץ' בופה חופשי 9:00-13:30 (105 ש\"ח לאדם)"
-    },
-    {
-        title: "חנות הכל love",
-        description: "ב וכולם באיכות מעולה ומחירים מדהימים! שעות פתיחה משתנות. חנות יד שנייה בוטיקית מוקפדת, הבגדים בחנות נבחרים אחד אחד ומגיעים מארה\"ב וכולם באיכות מעולה ומחירים מדהימים! שעות פתיחה משתנות.",
-        location: "איתמר, 15 דקות נסיעה",
-        contact: "0509975053",
-        contactName: "מיכל",
-        waze: "https://waze.com/ul/hsv9p53nhh"
-    },
-    {
-        title: "מעין אירוס השומרון",
-        description: "מעין שמתאים למשפחות וילדים, במקום שתי בריכות רדודות וקרירות, נקיות, מדשאות, פרגולות ושולחנות פיקניק. המעין מלא בחודשי הקיץ.",
-        location: "השער הצהוב לכיוון איתמר, כ-13 דקות נסיעה",
-        image: "https://i.imgur.com/BmjlkBR.jpg"
     }
 ];
 
@@ -131,6 +63,9 @@ function closeCustomAlert() {
     alert.classList.add('hidden');
 }
 
+// משתנה גלובלי ללוח השנה של המנהל
+let adminCalendarInstance = null;
+
 // פונקציה להמרת תאריך לפורמט עברי
 function getHebrewDate(date) {
     try {
@@ -147,99 +82,182 @@ function getHebrewDate(date) {
 
 // הגדרות לוח השנה
 const calendarOptions = {
-    input: false,
     type: 'single',
     settings: {
         lang: 'he-IL',
-        iso8601: false,
         range: {
             min: new Date().toISOString().split('T')[0],
             max: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]
         },
         visibility: {
             weekend: true,
-            today: true,
-            theme: 'light'
+            today: true
         },
         selection: {
             day: 'single'
         }
-    },
-    actions: {
-        clickDay(event, self) {
-            const selectedDate = event.target.closest('.vanilla-calendar-day').dataset.calendarDay;
-            if (selectedDate) {
-                document.getElementById('selected_date').value = selectedDate;
-            }
+    }
+};
+
+// הגדרות לוח השנה למנהל
+const adminCalendarOptions = {
+    type: 'multiple',
+    settings: {
+        lang: 'he-IL',
+        range: {
+            min: new Date().toISOString().split('T')[0],
+            max: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]
+        },
+        visibility: {
+            weekend: true,
+            today: true
+        },
+        selection: {
+            day: 'multiple'
         }
     }
 };
 
-// יונקציה לעדכון תאריכים חסומים ותאריכים עבריים
-async function updateCalendarDates() {
+// פונקציה לטיפול בחסימת תאריכים
+async function handleBlockDates() {
+    const selectedDates = adminCalendarInstance.selectedDates;
+    if (!selectedDates || selectedDates.length === 0) {
+        showCustomAlert('שגיאה', 'נא לבחור תאריכים לחסימה', 'error');
+        return;
+    }
+
     try {
-        // טעינת תאריכים חסומים
-        const { data: blockedDates, error } = await supabase
+        const { error } = await supabase
             .from('blocked_dates')
-            .select('date');
+            .insert(selectedDates.map(date => ({ date })));
 
         if (error) throw error;
-
-        const blockedDatesArray = blockedDates ? blockedDates.map(item => item.date) : [];
-        
-        // עדכון התאריכים בלוח
-        const days = document.querySelectorAll('.vanilla-calendar-day');
-        days.forEach(day => {
-            const dateStr = day.dataset.calendarDay;
-            if (!dateStr) return;
-
-            // הוספת התאריך העברי
-            if (!day.querySelector('.vanilla-calendar-day__hebrew-date')) {
-                const hebrewDateDiv = document.createElement('div');
-                hebrewDateDiv.className = 'vanilla-calendar-day__hebrew-date';
-                hebrewDateDiv.textContent = getHebrewDate(dateStr);
-                day.appendChild(hebrewDateDiv);
-            }
-
-            // סימון תאריכים חסומים
-            if (blockedDatesArray.includes(dateStr)) {
-                day.classList.add('vanilla-calendar-day--disabled');
-            } else {
-                day.classList.remove('vanilla-calendar-day--disabled');
-            }
-        });
+        showCustomAlert('הצלחה', 'התאריכים נחסמו בהצלחה');
+        setTimeout(() => location.reload(), 1500);
     } catch (error) {
-        console.error('Error updating calendar:', error);
+        console.error('Error blocking dates:', error);
+        showCustomAlert('שגיאה', 'אירעה שגיאה בחסימת התאריכים', 'error');
+    }
+}
+
+// פונקציה לטיפול בפתיחת תאריכים
+async function handleUnblockDates() {
+    const selectedDates = adminCalendarInstance.selectedDates;
+    if (!selectedDates || selectedDates.length === 0) {
+        showCustomAlert('שגיאה', 'נא לבחור תאריכים לפתיחה', 'error');
+        return;
+    }
+
+    try {
+        const { error } = await supabase
+            .from('blocked_dates')
+            .delete()
+            .in('date', selectedDates);
+
+        if (error) throw error;
+        showCustomAlert('הצלחה', 'התאריכים נפתחו בהצלחה');
+        setTimeout(() => location.reload(), 1500);
+    } catch (error) {
+        console.error('Error unblocking dates:', error);
+        showCustomAlert('שגיאה', 'אירעה שגיאה בפתיחת התאריכים', 'error');
+    }
+}
+
+// פונקציה לטיפול בשליחת טופס הזמנה
+async function handleBookingSubmit(e) {
+    e.preventDefault();
+    
+    const selectedDate = document.getElementById('selected_date').value;
+    if (!selectedDate) {
+        showCustomAlert('שגיאה', 'נא לבחור תאריך להזמנה', 'error');
+        return;
+    }
+    
+    const formData = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        guests: document.getElementById('guests').value || '2',
+        date: selectedDate,
+        created_at: new Date().toISOString(),
+        status: 'pending'
+    };
+
+    if (!formData.name || !formData.phone || !formData.email) {
+        showCustomAlert('שגיאה', 'נא למלא את כל השדות', 'error');
+        return;
+    }
+    
+    try {
+        const { error } = await supabase
+            .from('bookings')
+            .insert([formData]);
+            
+        if (error) throw error;
+        
+        const hebrewDate = new Intl.DateTimeFormat('he-IL', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(new Date(selectedDate));
+        
+        await emailjs.send(
+            "service_k9gm1tj",
+            "template_4oq5d2k",
+            {
+                to_email: formData.email,
+                from_name: "צימר טרה רוסה",
+                to_name: formData.name,
+                booking_date: hebrewDate,
+                guests: formData.guests
+            }
+        );
+        
+        showCustomAlert('הצלחה', 'בקשת הזמינות נשלחה בהצלחה! נחזור אליך בהקדם');
+        this.reset();
+        document.getElementById('selected_date').value = '';
+        
+    } catch (error) {
+        console.error('Error:', error);
+        showCustomAlert('שגיאה', 'אירעה שגיאה בשליחת הבקשה. נא לנסות שוב מאוחר יותר', 'error');
     }
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-    // יצירת לוח השנה
+    // יצירת לוח השנה הראשי
     const calendar = new VanillaCalendar('#calendar', calendarOptions);
     calendar.init();
 
-    // עדכון ראשוני של התאריכים
-    setTimeout(updateCalendarDates, 100);
+    // יצירת לוח השנה למנהל
+    const adminCalendarElement = document.getElementById('adminCalendar');
+    if (adminCalendarElement) {
+        adminCalendarInstance = new VanillaCalendar('#adminCalendar', adminCalendarOptions);
+        adminCalendarInstance.init();
+    }
 
-    // הגדרת עדכון בשינוי חודש
-    calendar.onMonthChange = () => {
-        setTimeout(updateCalendarDates, 100);
-    };
-
-    // אתחול Masonry לגלריות
-    const masonryGrids = document.querySelectorAll('.masonry-grid');
-    masonryGrids.forEach(grid => {
-        new Masonry(grid, {
-            itemSelector: '.masonry-item',
-            columnWidth: '.masonry-grid-column',
-            percentPosition: true
+    // טיפול בממשק הניהול
+    const adminBtn = document.getElementById('adminBtn');
+    const adminModal = document.getElementById('adminModal');
+    const adminForm = document.getElementById('adminForm');
+    const adminCalendarModal = document.getElementById('adminCalendarModal');
+    
+    if (adminBtn && adminModal) {
+        adminBtn.addEventListener('click', () => {
+            adminModal.classList.remove('hidden');
         });
-    });
+    }
 
-    // טיפול בטופס הזמנה
-    const bookingForm = document.getElementById('bookingForm');
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', handleBookingSubmit);
+    if (adminForm) {
+        adminForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = document.getElementById('adminPassword').value;
+            if (password === '1234') {
+                adminModal.classList.add('hidden');
+                adminCalendarModal.classList.remove('hidden');
+            } else {
+                showCustomAlert('שגיאה', 'סיסמה שגויה', 'error');
+            }
+        });
     }
 
     // טיפול בכפתורי חסימת תאריכים
@@ -248,5 +266,70 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (blockDatesBtn && unblockDatesBtn) {
         blockDatesBtn.addEventListener('click', handleBlockDates);
         unblockDatesBtn.addEventListener('click', handleUnblockDates);
+    }
+
+    // טיפול בטופס הזמנה
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', handleBookingSubmit);
+    }
+
+    // טיפול בכפתור האטרקציות
+    const showMoreBtn = document.getElementById('showMoreAttractions');
+    const attractionsModal = document.getElementById('attractionsModal');
+    const closeModalBtn = document.getElementById('closeAttractionsModal');
+    const modalContent = attractionsModal?.querySelector('.grid');
+
+    if (showMoreBtn && attractionsModal && modalContent) {
+        // הוספת האטרקציות למודל
+        additionalAttractions.forEach(attraction => {
+            const card = document.createElement('div');
+            card.className = 'bg-white p-6 rounded-lg shadow-lg attraction-card';
+            
+            let contactInfo = '';
+            if (attraction.contact) {
+                contactInfo = `
+                    <p class="text-gray-600 mb-4">טלפון: ${attraction.contact}</p>
+                    <a href="tel:${attraction.contact}" 
+                       class="inline-block bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition-colors">
+                       לתיאום: ${attraction.contactName || 'התקשר'}
+                    </a>
+                `;
+            } else if (attraction.waze) {
+                contactInfo = `
+                    <a href="${attraction.waze}" 
+                       target="_blank"
+                       class="inline-block bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition-colors">
+                       ניווט למקום
+                    </a>
+                `;
+            }
+
+            card.innerHTML = `
+                ${attraction.image ? `<img src="${attraction.image}" class="attraction-image" alt="${attraction.title}">` : ''}
+                <h3 class="text-xl font-bold mb-3">${attraction.title}</h3>
+                <p class="text-gray-600 mb-4">${attraction.location}</p>
+                <p class="mb-4">${attraction.description}</p>
+                ${attraction.hours ? `<p class="text-sm text-gray-600 mb-4">${attraction.hours}</p>` : ''}
+                ${contactInfo}
+            `;
+
+            modalContent.appendChild(card);
+        });
+
+        // אירועי פתיחה וסגירה של המודל
+        showMoreBtn.addEventListener('click', () => {
+            attractionsModal.classList.remove('hidden');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            attractionsModal.classList.add('hidden');
+        });
+
+        attractionsModal.addEventListener('click', (e) => {
+            if (e.target === attractionsModal) {
+                attractionsModal.classList.add('hidden');
+            }
+        });
     }
 }); 
