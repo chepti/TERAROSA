@@ -251,11 +251,11 @@
 }
 
 .testimonials-nav-button.prev {
-    right: 0;
+    left: 0;
 }
 
 .testimonials-nav-button.next {
-    left: 0;
+    right: 0;
 }
 
 @media (max-width: 768px) {

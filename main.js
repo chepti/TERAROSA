@@ -166,6 +166,22 @@ const calendarOptions = {
                 <div class="vanilla-calendar-day__hebrew-date"></div>
             </div>
         `
+    },
+    actions: {
+        clickArrowPrev: () => {
+            calendar.setMonth(calendar.selectedMonth - 1);
+            setTimeout(() => {
+                updateHebrewDates();
+                loadBlockedDates();
+            }, 100);
+        },
+        clickArrowNext: () => {
+            calendar.setMonth(calendar.selectedMonth + 1);
+            setTimeout(() => {
+                updateHebrewDates();
+                loadBlockedDates();
+            }, 100);
+        }
     }
 };
 
