@@ -133,9 +133,102 @@ function closeCustomAlert() {
 
 // פונקציה להמרת תאריך לפורמט עברי
 function getHebrewDate(date) {
-    const hDate = new Hebcal.HDate(date);
-    return hDate.toString('h');
+    const hebrewDate = new Intl.DateTimeFormat('he-IL-u-ca-hebrew', {
+        day: 'numeric',
+        month: 'numeric'
+    }).format(date);
+    return hebrewDate;
 }
+
+// הגדרות לוח השנה
+const calendarOptions = {
+    input: false,
+    type: 'multiple',
+    settings: {
+        lang: 'he-IL',
+        iso8601: false,
+        range: {
+            min: new Date().toISOString().split('T')[0],
+            max: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]
+        },
+        visibility: {
+            weekend: true,
+            today: true
+        },
+        selected: {
+            dates: []
+        }
+    },
+    DOMTemplates: {
+        default: `
+            <div class="vanilla-calendar-day" data-calendar-day="#{day}" #{available}>
+                <div class="vanilla-calendar-day__num">#{daynum}</div>
+                <div class="vanilla-calendar-day__hebrew-date"></div>
+            </div>
+        `
+    }
+};
+
+// עדכון התאריכים העבריים בלוח
+function updateHebrewDates() {
+    const days = document.querySelectorAll('.vanilla-calendar-day');
+    days.forEach(day => {
+        const dateStr = day.getAttribute('data-calendar-day');
+        if (dateStr) {
+            const date = new Date(dateStr);
+            const hebrewDate = getHebrewDate(date);
+            const hebrewDateDiv = day.querySelector('.vanilla-calendar-day__hebrew-date');
+            if (hebrewDateDiv) {
+                hebrewDateDiv.textContent = hebrewDate;
+            }
+        }
+    });
+}
+
+// יצירת לוח השנה
+const calendar = new VanillaCalendar('#calendar', calendarOptions);
+calendar.init();
+
+// עדכון התאריכים העבריים בכל שינוי חודש
+calendar.onMonthChange = () => {
+    setTimeout(updateHebrewDates, 100);
+};
+
+// עדכון התאריכים העבריים בטעינה
+setTimeout(updateHebrewDates, 100);
+
+// פונקציה לטעינת תאריכים תפוסים
+async function loadBlockedDates() {
+    try {
+        const { data: blockedDates } = await supabase
+            .from('blocked_dates')
+            .select('date');
+
+        if (blockedDates) {
+            const blockedDatesArray = blockedDates.map(item => item.date);
+            
+            // עדכון התאריכים התפוסים בלוח
+            const days = document.querySelectorAll('.vanilla-calendar-day');
+            days.forEach(day => {
+                const dateStr = day.getAttribute('data-calendar-day');
+                if (blockedDatesArray.includes(dateStr)) {
+                    day.classList.add('vanilla-calendar-day--disabled');
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error loading blocked dates:', error);
+    }
+}
+
+// טעינת תאריכים תפוסים בטעינת הדף ובכל שינוי חודש
+loadBlockedDates();
+calendar.onMonthChange = () => {
+    setTimeout(() => {
+        updateHebrewDates();
+        loadBlockedDates();
+    }, 100);
+};
 
 document.addEventListener('DOMContentLoaded', async function() {
     try {

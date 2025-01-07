@@ -108,6 +108,11 @@
     transition: all 0.2s;
     position: relative;
     min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 }
 
 .vanilla-calendar-day:hover {
@@ -122,22 +127,40 @@
 .vanilla-calendar-day--disabled {
     background-color: #e5e7eb !important;
     color: #9ca3af !important;
-    text-decoration: line-through;
     cursor: not-allowed;
+}
+
+.vanilla-calendar-day--disabled .vanilla-calendar-day__hebrew-date {
+    color: #9ca3af !important;
 }
 
 .vanilla-calendar-day--today {
     border: 2px solid #d97706;
 }
 
+.vanilla-calendar-day__num {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
 .vanilla-calendar-day__hebrew-date {
-    font-size: 0.7em;
+    font-size: 0.75rem;
     color: #666;
-    position: absolute;
-    bottom: 2px;
-    left: 0;
-    right: 0;
-    text-align: center;
+    margin-top: -2px;
+}
+
+@media (max-width: 768px) {
+    .vanilla-calendar-day {
+        min-height: 50px;
+    }
+    
+    .vanilla-calendar-day__num {
+        font-size: 0.9rem;
+    }
+    
+    .vanilla-calendar-day__hebrew-date {
+        font-size: 0.65rem;
+    }
 }
 
 #adminCalendar {
