@@ -133,17 +133,22 @@ function closeCustomAlert() {
 
 // פונקציה להמרת תאריך לפורמט עברי
 function getHebrewDate(date) {
-    const hebrewDate = new Intl.DateTimeFormat('he-IL-u-ca-hebrew', {
-        day: 'numeric',
-        month: 'numeric'
-    }).format(date);
-    return hebrewDate;
+    try {
+        const hebrewDate = new Intl.DateTimeFormat('he-IL-u-ca-hebrew', {
+            day: 'numeric',
+            month: 'numeric'
+        }).format(new Date(date));
+        return hebrewDate;
+    } catch (error) {
+        console.error('Error converting date:', error);
+        return '';
+    }
 }
 
 // הגדרות לוח השנה
 const calendarOptions = {
     input: false,
-    type: 'multiple',
+    type: 'single',
     settings: {
         lang: 'he-IL',
         iso8601: false,
@@ -155,44 +160,78 @@ const calendarOptions = {
             weekend: true,
             today: true
         },
-        selected: {
-            dates: []
+        selection: {
+            day: 'single'
         }
     },
-    DOMTemplates: {
-        default: `
-            <div class="vanilla-calendar-day" data-calendar-day="#{day}" #{available}>
-                <div class="vanilla-calendar-day__num">#{daynum}</div>
-                <div class="vanilla-calendar-day__hebrew-date"></div>
-            </div>
-        `
+    actions: {
+        clickDay(event, self) {
+            const selectedDate = event.target.closest('.vanilla-calendar-day').dataset.calendarDay;
+            document.getElementById('selected_date').value = selectedDate;
+        }
     }
 };
-
-// עדכון התאריכים העבריים בלוח
-function updateHebrewDates() {
-    const days = document.querySelectorAll('.vanilla-calendar-day');
-    days.forEach(day => {
-        const dateStr = day.getAttribute('data-calendar-day');
-        if (dateStr) {
-            const date = new Date(dateStr);
-            const hebrewDate = getHebrewDate(date);
-            const hebrewDateDiv = day.querySelector('.vanilla-calendar-day__hebrew-date');
-            if (hebrewDateDiv) {
-                hebrewDateDiv.textContent = hebrewDate;
-            }
-        }
-    });
-}
 
 // יצירת לוח השנה
 const calendar = new VanillaCalendar('#calendar', calendarOptions);
 calendar.init();
 
-// עדכון התאריכים העבריים בכל שינוי חודש
-calendar.onMonthChange = () => {
-    setTimeout(updateHebrewDates, 100);
-};
+// פונקציה להמרת תאריך לפורמט עברי
+function getHebrewDate(date) {
+    try {
+        const hebrewDate = new Intl.DateTimeFormat('he-IL-u-ca-hebrew', {
+            day: 'numeric',
+            month: 'numeric'
+        }).format(new Date(date));
+        return hebrewDate;
+    } catch (error) {
+        console.error('Error converting date:', error);
+        return '';
+    }
+}
+
+// עדכון התאריכים העבריים והתאריכים החסומים
+async function updateCalendarDates() {
+    try {
+        // טעינת תאריכים חסומים
+        const { data: blockedDates, error } = await supabase
+            .from('blocked_dates')
+            .select('date');
+
+        if (error) throw error;
+
+        const blockedDatesArray = blockedDates ? blockedDates.map(item => item.date) : [];
+        
+        // עדכון התאריכים בלוח
+        const days = document.querySelectorAll('.vanilla-calendar-day');
+        days.forEach(day => {
+            const dateStr = day.dataset.calendarDay;
+            if (!dateStr) return;
+
+            // הוספת התאריך העברי
+            const hebrewDateDiv = day.querySelector('.vanilla-calendar-day__hebrew-date') || 
+                                document.createElement('div');
+            hebrewDateDiv.className = 'vanilla-calendar-day__hebrew-date';
+            hebrewDateDiv.textContent = getHebrewDate(dateStr);
+            if (!day.querySelector('.vanilla-calendar-day__hebrew-date')) {
+                day.appendChild(hebrewDateDiv);
+            }
+
+            // סימון תאריכים חסומים
+            if (blockedDatesArray.includes(dateStr)) {
+                day.classList.add('vanilla-calendar-day--disabled');
+            } else {
+                day.classList.remove('vanilla-calendar-day--disabled');
+            }
+        });
+    } catch (error) {
+        console.error('Error updating calendar:', error);
+    }
+}
+
+// עדכון בטעינה ובשינוי חודש
+calendar.onMonthChange = updateCalendarDates;
+document.addEventListener('DOMContentLoaded', updateCalendarDates);
 
 // עדכון התאריכים העבריים בטעינה
 setTimeout(updateHebrewDates, 100);

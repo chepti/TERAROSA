@@ -113,10 +113,12 @@
     align-items: center;
     justify-content: center;
     gap: 4px;
+    padding: 4px;
 }
 
-.vanilla-calendar-day:hover {
+.vanilla-calendar-day:hover:not(.vanilla-calendar-day--disabled) {
     background-color: #f3f4f6;
+    cursor: pointer;
 }
 
 .vanilla-calendar-day--selected {
@@ -124,10 +126,14 @@
     color: white !important;
 }
 
+.vanilla-calendar-day--selected .vanilla-calendar-day__hebrew-date {
+    color: white !important;
+}
+
 .vanilla-calendar-day--disabled {
-    background-color: #e5e7eb !important;
+    background-color: #e2e2e2 !important;
     color: #9ca3af !important;
-    cursor: not-allowed;
+    cursor: not-allowed !important;
 }
 
 .vanilla-calendar-day--disabled .vanilla-calendar-day__hebrew-date {
@@ -147,11 +153,13 @@
     font-size: 0.75rem;
     color: #666;
     margin-top: -2px;
+    text-align: center;
 }
 
 @media (max-width: 768px) {
     .vanilla-calendar-day {
         min-height: 50px;
+        padding: 2px;
     }
     
     .vanilla-calendar-day__num {
