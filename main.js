@@ -167,7 +167,9 @@ const calendarOptions = {
     actions: {
         clickDay(event, self) {
             const selectedDate = event.target.closest('.vanilla-calendar-day').dataset.calendarDay;
-            document.getElementById('selected_date').value = selectedDate;
+            if (selectedDate) {
+                document.getElementById('selected_date').value = selectedDate;
+            }
         }
     }
 };
@@ -176,21 +178,7 @@ const calendarOptions = {
 const calendar = new VanillaCalendar('#calendar', calendarOptions);
 calendar.init();
 
-// פונקציה להמרת תאריך לפורמט עברי
-function getHebrewDate(date) {
-    try {
-        const hebrewDate = new Intl.DateTimeFormat('he-IL-u-ca-hebrew', {
-            day: 'numeric',
-            month: 'numeric'
-        }).format(new Date(date));
-        return hebrewDate;
-    } catch (error) {
-        console.error('Error converting date:', error);
-        return '';
-    }
-}
-
-// עדכון התאריכים העבריים והתאריכים החסומים
+// פדכון התאריכים העבריים והתאריכים החסומים
 async function updateCalendarDates() {
     try {
         // טעינת תאריכים חסומים
@@ -209,11 +197,10 @@ async function updateCalendarDates() {
             if (!dateStr) return;
 
             // הוספת התאריך העברי
-            const hebrewDateDiv = day.querySelector('.vanilla-calendar-day__hebrew-date') || 
-                                document.createElement('div');
-            hebrewDateDiv.className = 'vanilla-calendar-day__hebrew-date';
-            hebrewDateDiv.textContent = getHebrewDate(dateStr);
             if (!day.querySelector('.vanilla-calendar-day__hebrew-date')) {
+                const hebrewDateDiv = document.createElement('div');
+                hebrewDateDiv.className = 'vanilla-calendar-day__hebrew-date';
+                hebrewDateDiv.textContent = getHebrewDate(dateStr);
                 day.appendChild(hebrewDateDiv);
             }
 
@@ -230,8 +217,14 @@ async function updateCalendarDates() {
 }
 
 // עדכון בטעינה ובשינוי חודש
-calendar.onMonthChange = updateCalendarDates;
-document.addEventListener('DOMContentLoaded', updateCalendarDates);
+calendar.onMonthChange = () => {
+    setTimeout(updateCalendarDates, 100);
+};
+
+// עדכון ראשוני
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(updateCalendarDates, 100);
+});
 
 // עדכון התאריכים העבריים בטעינה
 setTimeout(updateHebrewDates, 100);
