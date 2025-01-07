@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="צימר טרה רוסה - חופשה זוגית מושלמת בגבעת ארנון">
+    <meta name="theme-color" content="#d97706">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; img-src * data: blob: 'unsafe-inline'; connect-src *;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+    <title>צימר טרה רוסה - גבעת ארנון</title>
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://ouuugtgasfbxtrjswlsh.supabase.co">
+    <link rel="preconnect" href="https://i.imgur.com">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2C9.24 2 7 4.24 7 7l5 7 5-7c0-2.76-2.24-5-5-5zm0 9L9 7c0-1.66 1.34-3 3-3s3 1.34 3 3l-3 4zm-3 3c-2.21 0-4 1.79-4 4v3h14v-3c0-2.21-1.79-4-4-4H9zm0 2h6c1.1 0 2 .9 2 2v1H7v-1c0-1.1.9-2 2-2z' fill='%23d97706'/></svg>" type="image/svg+xml">
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="טרה רוסה">
+    
+    <!-- Vanilla Calendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@uvarov.frontend/vanilla-calendar/build/vanilla-calendar.min.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@uvarov.frontend/vanilla-calendar/build/vanilla-calendar.min.js" defer crossorigin="anonymous"></script>
+    
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer crossorigin="anonymous"></script>
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin="anonymous"></script>
+    
+    <!-- Hebrew Calendar -->
+    <script src="https://cdn.jsdelivr.net/npm/@hebcal/core"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com" crossorigin="anonymous"></script>
+
+    <!-- התאמות לטלפון -->
+    <style>
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            h2 {
+                font-size: 1.8rem !important;
+            }
+            .hero-text {
+                padding: 0 1rem;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .testimonials-container {
+                padding: 0 1rem !important;
+            }
+            .testimonial-item {
+                flex: 0 0 300px !important;
+            }
+            .benefits img {
+                max-height: 150px !important;
+            }
+            .vanilla-calendar {
+                font-size: 14px !important;
+            }
+            .vanilla-calendar-day {
+                width: 35px !important;
+                height: 35px !important;
+                font-size: 14px !important;
+            }
+            .modal-content {
+                width: 90% !important;
+                margin: 1rem !important;
+            }
+            .attraction-card {
+                padding: 1rem !important;
+            }
+        }
+
+        /* מניעת זום באייפון */
+        input, select, textarea {
+            font-size: 16px !important;
+        }
+
+        /* תיקון לבעיית הסקרול במובייל */
+        html, body {
+            overflow-x: hidden;
+            position: relative;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* עיצוב תאריך עברי */
+        .vanilla-calendar-day__hebrew-date {
+            font-size: 0.7em;
+            color: #666;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* הקטנת גודל תמונת השובר */
+        .voucher-image {
+            max-height: 180px !important;
+            width: auto;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body class="bg-stone-50">
+    <!-- Hero Section -->
+    <header class="relative h-screen">
+        <div class="absolute inset-0">
+            <img src="https://i.imgur.com/9kMgwhv.jpg" alt="טרה רוסה" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+        </div>
+        <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
+            <h1 class="text-6xl font-bold mb-4">צימר טרה רוסה</h1>
+            <h2 class="text-3xl mb-8">בגבעת ארנון</h2>
+            <p class="text-xl max-w-2xl">חופשה זוגית חמימה ומושלמת, בצימר מאובזר ויפיפה... זה הזמן להתפנק, רק שניכם!</p>
+        </div>
+    </header>
+
+    <!-- Custom Alert -->
+    <div id="customAlert" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm mx-4 slide-in">
+            <div id="alertIcon" class="mb-4"></div>
+            <h3 id="alertTitle" class="text-xl font-bold mb-2 text-center"></h3>
+            <p id="alertMessage" class="text-gray-600 text-center mb-4"></p>
+            <button onclick="closeCustomAlert()" class="w-full bg-amber-600 text-white py-2 rounded hover:bg-amber-700">
+                סגור
+            </button>
+        </div>
+    </div>
+</body>
+</html> 

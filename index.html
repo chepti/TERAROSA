@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>צימר טרה רוסה - גבעת ארנון</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2C9.24 2 7 4.24 7 7l5 7 5-7c0-2.76-2.24-5-5-5zm0 9L9 7c0-1.66 1.34-3 3-3s3 1.34 3 3l-3 4zm-3 3c-2.21 0-4 1.79-4 4v3h14v-3c0-2.21-1.79-4-4-4H9zm0 2h6c1.1 0 2 .9 2 2v1H7v-1c0-1.1.9-2 2-2z' fill='%23d97706'/></svg>" type="image/svg+xml">
+    
+    <!-- Vanilla Calendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@uvarov.frontend/vanilla-calendar/build/vanilla-calendar.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-stone-50">
+    <!-- Hero Section -->
+    <header class="relative h-screen">
+        <div class="absolute inset-0">
+            <img src="https://i.imgur.com/9kMgwhv.jpg" alt="טרה רוסה" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+        </div>
+        <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center">
+            <h1 class="text-6xl font-bold mb-4">צימר טרה רוסה</h1>
+            <h2 class="text-3xl mb-8">בגבעת ארנון</h2>
+            <p class="text-xl max-w-2xl">חופשה זוגית חמימה ומושלמת, בצימר מאובזר ויפיפה... זה הזמן להתפנק, רק שניכם!</p>
+        </div>
+    </header>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="gallery-grid">
+            <div class="gallery-item vertical">
+                <img src="https://i.imgur.com/9kMgwhv.jpg" alt="טרה רוסה" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="https://i.imgur.com/LdAYOXr.jpg" alt="טרה רוסה" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="https://i.imgur.com/PoWrQ6A.jpg" alt="טרה רוסה" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+
+
+  
+  
+    <!-- Modal for enlarged images -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center cursor-pointer">
+        <img id="modalImage" src="" alt="תמונה מוגדלת" class="max-h-[90vh] max-w-[90vw] object-contain">
+    </div>
+
+    <!-- Booking Section -->
+    <section id="booking" class="py-16 px-4 bg-stone-100">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl text-center mb-12">בדיקת זמינות</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-4 rounded-lg shadow-lg">
+                    <div id="calendar"></div>
+                    <div class="flex items-center justify-end mt-4">
+                        <button id="adminBtn" class="text-gray-400 hover:text-amber-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <form id="bookingForm" class="bg-white p-8 rounded-lg shadow-lg">
+                    <div id="selectedDateDisplay" class="mb-4 text-amber-600 hidden"></div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">שם מלא</label>
+                        <input type="text" id="name" required class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">טלפון</label>
+                        <input type="tel" id="phone" required class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">אימייל</label>
+                        <input type="email" id="email" required class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">מספר אורחים</label>
+                        <select id="guests" class="w-full p-2 border rounded">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-amber-600 text-white py-3 rounded hover:bg-amber-700">שלח בקשת זמינות</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto mt-20">
+            <h3 class="text-2xl mb-4">כניסת מנהל</h3>
+            <form id="adminForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">סיסמה</label>
+                    <input type="password" id="adminPassword" required class="w-full p-2 border rounded">
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button type="button" id="adminCancelBtn" class="px-4 py-2 text-gray-600">ביטול</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded">כניסה</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Calendar Modal -->
+    <div id="adminCalendarModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto mt-20">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl">ניהול זמינות</h3>
+                <button id="adminCloseBtn" class="text-gray-600 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="adminCalendar"></div>
+            <div class="mt-4">
+                <button id="blockDatesBtn" class="px-4 py-2 bg-red-600 text-white rounded mr-2">חסום תאריכים</button>
+                <button id="unblockDatesBtn" class="px-4 py-2 bg-green-600 text-white rounded">פתח תאריכים</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl text-center mb-12">הטבות מיוחדות</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-lg gallery-item">
+                    <img src="https://i.imgur.com/Cx4V4Of.jpg" alt="בית קפה המתומן" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-2xl mb-4">שובר לבית קפה 'המתומן'</h3>
+                    <p>הנות מארוחת בוקר זוגית מפנקת בבית הקפה המקסים שלנו</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl mb-4">שובר למסאז'</h3>
+                    <p>פינוק אמיתי עם מסאז' זוגי מרגיע</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <div class="gallery-grid">
+            <div class="gallery-item vertical">
+                <img src="https://i.imgur.com/YiQ9Yy2.jpg" alt="טרה רוסה" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="https://i.imgur.com/XdkHQrk.jpg" alt="טרה רוסה" loading="lazy">
+            </div>
+            <div class="gallery-item vertical">
+                <img src="https://i.imgur.com/SZPYz1k.jpg" alt="טרה רוסה" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Map Section -->
+    <section id="location" class="py-16 px-4 bg-stone-100">
+        <h2 class="text-4xl text-center mb-12">איך מגיעים?</h2>
+        <div class="max-w-6xl mx-auto h-96">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3375.4751964837584!2d35.365617!3d32.1524317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzLCsDA5JzA4LjgiTiAzNcKwMjEnNTYuMiJF!5e1!3m2!1sen!2sil!4v1635784953000!5m2!1sen!2sil" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl text-center mb-12">מה אומרים עלינו?</h2>
+            <div class="testimonials-container">
+                <div class="testimonials-wrapper">
+                    <div class="testimonials-track">
+                        <!-- המלצה 1 -->
+                        <div class="testimonial-item">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"תודה רבה על המקום, מאלף. תודה על המזגן! יש מישהו אחרינו או שנוכל להתעכב עוד קצת? ממש מיוחד פה, אלופים!"</p>
+                                <p class="testimonial-author">- יעקב</p>
+                            </div>
+                        </div>
+                        <!-- המלצה 2 -->
+                        <div class="testimonial-item">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"יצאנו. תודה רבה על הכל. היה אש! כבר המלצנו..."</p>
+                                <p class="testimonial-author">- יעקב</p>
+                            </div>
+                        </div>
+                        <!-- המלצה 3 -->
+                        <div class="testimonial-item">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"בוקר אור. יצאנו עכשיו, היה מקסים! תודה רבה!"</p>
+                                <p class="testimonial-author">- אורי</p>
+                            </div>
+                        </div>
+                        <!-- המלצה 4 -->
+                        <div class="testimonial-item">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"שבוע טוב! תודה רבה רבה! צימר מהמם! ממש נהננו!"</p>
+                                <p class="testimonial-author">- דקלה</p>
+                            </div>
+                        </div>
+                        <!-- המלצה 5 -->
+                        <div class="testimonial-item">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"הגעתי בלי להתבלבל, הוייז הנחה אותי נהדר. ועכשיו אני מוקסמת מהצימר היפייפה. הכל פה ממש נעים חמים ומוקפד. תודה על הפינוקים!"</p>
+                                <p class="testimonial-author">- שקד</p>
+                            </div>
+                        </div>
+                        <!-- המלצה 6 -->
+                        <div class="testimonial-item">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"בוקר טוב נעמי. יצאנו מהצימר.. היה מושלם מפנק ונעים ממש!! כל פינה יותר יפיפיה ומושקעת מהשניה! ממש חשבתם על כל הפרטים הקטנים וואו! והריח בצימר נעים ומזמין ככ! נמליץ לעוד הרבה חברים להגיע גם! תודה גדולה ממש!"</p>
+                                <p class="testimonial-author">- טליה</p>
+                            </div>
+                        </div>
+                        <!-- המלצה 7 -->
+                        <div class="testimonial-item">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"יצאנו. תודה ענקית. היה מפנק ונעים כל כך.. נמליץ לחברים!"</p>
+                                <p class="testimonial-author">- אילה</p>
+                            </div>
+                        </div>
+                        <!-- המלצה 8 -->
+                        <div class="testimonial-item">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"יצאנו.. קודם כל, היה באמת מהמםםםם! זה פשוט כיף ההקפדה על הפרטים הקטנים, היה נעים וממש נקי!! (וזה סופר חשוב לי)"</p>
+                                <p class="testimonial-author">- הדס</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- כפתורי ניווט -->
+                <button class="testimonials-nav-button prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button class="testimonials-nav-button next">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Alert Modal -->
+    <div id="customAlert" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto text-center">
+            <div id="alertIcon" class="mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <h3 class="text-2xl mb-4" id="alertTitle">הפעולה הושלמה בהצלחה</h3>
+            <p class="text-gray-600 mb-6" id="alertMessage"></p>
+            <button class="px-6 py-2 bg-amber-600 text-white rounded hover:bg-amber-700" onclick="closeCustomAlert()">סגור</button>
+        </div>
+    </div>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-16 px-4 bg-stone-100">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl text-center mb-12">מחירים ותנאים</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl mb-6">מחירון</h3>
+                    <ul class="space-y-4 text-lg">
+                        <li class="flex justify-between items-center">
+                            <span>לילה לזוג באמצע שבוע</span>
+                            <span class="font-bold">₪800</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span>סופ"ש (חמישי-שבת)</span>
+                            <span class="font-bold">₪850</span>
+                        </li>
+                        <li class="text-amber-700">מוצ"ש למתארחים בשבת - חצי מחיר!</li>
+                        <li class="text-amber-700">לילה שני - הנחה של ₪50</li>
+                        <li class="text-sm text-gray-600 mt-4">* ילד מעל גיל שנתיים - תוספת של ₪100</li>
+                        <li class="text-sm text-gray-600">* תינוק עד גיל שנתיים - ללא תוספת תשלום</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl mb-6">מידע חשוב</h3>
+                    <ul class="space-y-4 text-lg">
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>כניסה: 15:00 | יציאה: 12:00</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span>ליצירת קשר: naomialt9@gmail.com</span>
+                        </li>
+                        <li class="mt-6 text-gray-600">
+                            <p>* בקרוב תיפתח קומת הילדים!</p>
+                            <p class="text-sm mt-2">כרגע ניתן להביא רק תינוק (עד גיל שנתיים)</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Attractions Section -->
+    <section id="attractions" class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl text-center mb-12">אטרקציות בסביבה</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- בית קפה המתומן -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-3">בית קפה "המתומן"</h3>
+                    <p class="text-gray-600 mb-4">5 דקות נסיעה • כשר</p>
+                    <p class="mb-4">תפריט איכותי ומגוון מתוצרת החווה. קפה, גבינות וביצים אורגניות, לחמי מחמצת ומאפים.</p>
+                    <div class="text-amber-600 font-bold mb-2">10% הנחה לאורחי הצימר</div>
+                    <a href="tel:+972000000000" class="inline-block bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition-colors">להזמנת מקום</a>
+                </div>
+
+                <!-- מצפה מתן -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-3">מצפה מתן</h3>
+                    <p class="text-gray-600 mb-4">2 דקות נסיעה או 20 דקות הליכה</p>
+                    <p class="mb-4">מצפה אל נוף הבקעה המטריף, נדנדות ענקיות, שולחנות פיקניק ושקט מושלם.</p>
+                    <a href="https://waze.com/ul/hsv8x7k59j" target="_blank" class="inline-block bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition-colors">ניווט למקום</a>
+                </div>
+
+                <!-- בור מים -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-3">בור מים</h3>
+                    <p class="text-gray-600 mb-4">2 דקות נסיעה או 20 דקות הליכה</p>
+                    <p class="mb-4">בור מים משופץ עם דק מרווח, פרגולה, פינת ישיבה ומדורה. מושלם לטבילה קרירה.</p>
+                    <a href="https://waze.com/ul/hsv8x7k59j" target="_blank" class="inline-block bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition-colors">ניווט למקום</a>
+                </div>
+
+                <!-- יקב תום -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-3">יקב תום</h3>
+                    <p class="text-gray-600 mb-4">הליכה נעימה בתוך הגבעה</p>
+                    <p class="mb-4">יקב בוטיק עם יינות איכותיים נושאי פרסים. דיר כבשים ואנשים טובים.</p>
+                    <a href="tel:0527390763" class="inline-block bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition-colors">לתיאום ביקור: מיטל</a>
+                </div>
+
+                <!-- סטודיו בוץ -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-3">סטודיו בוץ</h3>
+                    <p class="text-gray-600 mb-4">8 דקות נסיעה</p>
+                    <p class="mb-4">סדנאות קרמיקה לזוגות ומשפחות, מכירת כלים מיוחדים בעבודת יד.</p>
+                    <a href="tel:0523445019" class="inline-block bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition-colors">לתיאום: בתיה</a>
+                </div>
+
+                <!-- עיסויים לנשים -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold mb-3">עיסויים לנשים - אסתי</h3>
+                    <p class="text-gray-600 mb-4">מגיעה עד לצימר!</p>
+                    <p class="mb-4">עיסוי מפנק ומשחרר, כולל עיסוי להריוניות. מחיר מיוחד לאורחים.</p>
+                    <a href="tel:0528745591" class="inline-block bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition-colors">להזמנת עיסוי</a>
+                </div>
+            </div>
+            
+            <!-- כפתור לפתיחת כל האטרקציות -->
+            <div class="text-center mt-8">
+                <button id="showMoreAttractions" class="bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors">
+                    לכל האטרקציות באזור
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Attractions Modal -->
+    <div id="attractionsModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden overflow-y-auto">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto my-8">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">כל האטרקציות באזור</h3>
+                <button id="closeAttractionsModal" class="text-gray-600 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- יתר האטרקציות יתווספו כאן דרך JavaScript -->
+            </div>
+        </div>
+
+            <!-- Gallery Section 2 -->
+    <section class="gallery-section bg-stone-100">
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://i.imgur.com/4LJtXK1.jpg" alt="טרה רוסה" loading="lazy">
+            </div>
+            <div class="gallery-item vertical">
+                <img src="https://i.imgur.com/MinrMak.jpg" alt="טרה רוסה" loading="lazy">
+            </div>
+            <div class="gallery-item vertical">
+                <img src="https://i.imgur.com/kdpiLrI.jpg" alt="טרה רוסה" loading="lazy">
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <!-- Scripts - Load at end of body -->
+    <script src="https://cdn.jsdelivr.net/npm/@uvarov.frontend/vanilla-calendar/build/vanilla-calendar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html> 

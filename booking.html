@@ -1,0 +1,78 @@
+<!-- Booking Section -->
+<section id="booking" class="py-8 md:py-16 px-4 bg-stone-100">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl md:text-4xl text-center mb-8 md:mb-12">בדיקת זמינות</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+            <div class="bg-white p-3 md:p-4 rounded-lg shadow-lg">
+                <div id="calendar" class="w-full max-w-full overflow-x-auto"></div>
+                <div class="flex items-center justify-end mt-4">
+                    <button id="adminBtn" class="text-gray-400 hover:text-amber-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <form id="bookingForm" class="bg-white p-4 md:p-8 rounded-lg shadow-lg">
+                <div id="selectedDateDisplay" class="mb-4 text-amber-600 hidden"></div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">שם מלא</label>
+                    <input type="text" id="name" required class="w-full p-2 border rounded text-base md:text-lg">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">טלפון</label>
+                    <input type="tel" id="phone" required class="w-full p-2 border rounded text-base md:text-lg">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">אימייל</label>
+                    <input type="email" id="email" required class="w-full p-2 border rounded text-base md:text-lg">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">מספר אורחים</label>
+                    <select id="guests" class="w-full p-2 border rounded text-base md:text-lg">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-amber-600 text-white py-3 rounded hover:bg-amber-700 text-base md:text-lg">שלח בקשת זמינות</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Admin Modal -->
+<div id="adminModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div class="bg-white p-4 md:p-8 rounded-lg shadow-lg max-w-md mx-auto mt-20 mx-4">
+        <h3 class="text-xl md:text-2xl mb-4">כניסת מנהל</h3>
+        <form id="adminForm">
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-2">סיסמה</label>
+                <input type="password" id="adminPassword" required class="w-full p-2 border rounded">
+            </div>
+            <div class="flex justify-end gap-4">
+                <button type="button" id="adminCancelBtn" class="px-4 py-2 text-gray-600">ביטול</button>
+                <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded">כניסה</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Admin Calendar Modal -->
+<div id="adminCalendarModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div class="bg-white p-4 md:p-8 rounded-lg shadow-lg max-w-4xl mx-auto mt-20 mx-4">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl md:text-2xl">ניהול זמינות</h3>
+            <button id="adminCloseBtn" class="text-gray-600 hover:text-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div id="adminCalendar" class="w-full max-w-full overflow-x-auto"></div>
+        <div class="mt-4 flex flex-wrap gap-2">
+            <button id="blockDatesBtn" class="px-4 py-2 bg-red-600 text-white rounded">חסום תאריכים</button>
+            <button id="unblockDatesBtn" class="px-4 py-2 bg-green-600 text-white rounded">פתח תאריכים</button>
+        </div>
+    </div>
+</div> 

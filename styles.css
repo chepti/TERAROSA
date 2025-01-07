@@ -1,0 +1,434 @@
+/* עיצובים כלליים */
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap');
+
+* {
+    font-family: 'Heebo', sans-serif;
+}
+
+/* עיצוב גלריה */
+.gallery-section {
+    padding: 2rem 0;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.gallery-item.vertical {
+    grid-row: span 2;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* עיצוב לוח השנה */
+.vanilla-calendar {
+    width: 100%;
+    max-width: 100%;
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-family: 'Heebo', sans-serif;
+}
+
+.vanilla-calendar-header {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.vanilla-calendar-week {
+    padding: 0.5rem;
+    background: #f8f9fa;
+}
+
+.vanilla-calendar-week span {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.vanilla-calendar-day {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.9rem;
+    color: #4a5568;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+    position: relative;
+    min-height: 60px;
+}
+
+.vanilla-calendar-day:hover {
+    background-color: #f3f4f6;
+}
+
+.vanilla-calendar-day--selected {
+    background-color: #d97706 !important;
+    color: white !important;
+}
+
+.vanilla-calendar-day--disabled {
+    background-color: #e5e7eb !important;
+    color: #9ca3af !important;
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+
+.vanilla-calendar-day--today {
+    border: 2px solid #d97706;
+}
+
+.vanilla-calendar-day__hebrew-date {
+    font-size: 0.7em;
+    color: #666;
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+#adminCalendar {
+    max-width: 350px;
+}
+
+#adminCalendar .vanilla-calendar-day {
+    font-size: 0.9rem;
+    padding: 0.25rem;
+}
+
+/* קרוסלת המלצות */
+.testimonials-container {
+    position: relative;
+    padding: 0 3rem;
+}
+
+.testimonials-wrapper {
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 2rem 0;
+}
+
+.testimonials-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.testimonials-track {
+    display: flex;
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+.testimonial-item {
+    flex: 0 0 350px;
+}
+
+.testimonial-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transform: rotate(-1deg);
+    transition: transform 0.3s ease;
+}
+
+.testimonial-content:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+.testimonial-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.testimonial-author {
+    color: #d97706;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.testimonials-nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.testimonials-nav-button:hover {
+    background: #fef3c7;
+}
+
+.testimonials-nav-button.prev {
+    right: 0;
+}
+
+.testimonials-nav-button.next {
+    left: 0;
+}
+
+@media (max-width: 768px) {
+    .testimonial-item {
+        flex: 0 0 300px;
+    }
+    
+    .testimonials-container {
+        padding: 0 2rem;
+    }
+}
+
+/* אנימציות */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.slide-in {
+    animation: slideIn 0.5s ease-out;
+}
+
+/* התאמות למובייל */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem !important;
+    }
+    
+    h2 {
+        font-size: 1.8rem !important;
+    }
+    
+    .hero-text {
+        padding: 0 1rem;
+    }
+
+    .vanilla-calendar {
+        font-size: 0.9rem;
+    }
+
+    .testimonial-item p {
+        font-size: 1.25rem !important;
+    }
+}
+
+/* עיצובים מותאמים אישית */
+input:focus, select:focus {
+    outline: none;
+    border-color: #d97706;
+    ring: 2px;
+    ring-color: #d97706;
+}
+
+button:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: #d97706;
+}
+
+/* חלונית התראה מותאמת אישית */
+#customAlert {
+    display: none;
+}
+
+#customAlert.show {
+    display: flex !important;
+}
+
+#customAlert .slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* עיצוב אטרקציות */
+.attraction-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.attraction-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
+    transition: opacity 0.3s ease;
+}
+
+.attraction-card:hover::before {
+    opacity: 0.15;
+}
+
+.attraction-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 2px solid #d97706;
+}
+
+.benefits img {
+    max-height: 180px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.benefits img:hover {
+    transform: scale(1.05);
+}
+
+.gallery-item.vertical img {
+    height: 66vh; /* שני שליש מגובה המסך */
+}
+
+@media (max-width: 768px) {
+    .gallery-item.vertical img {
+        height: auto;
+    }
+}
+
+/* כפתור וואטסאפ צף */
+.whatsapp-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    background-color: #25D366;
+    color: white;
+    border-radius: 50px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.whatsapp-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.whatsapp-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.close-whatsapp {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* WhatsApp Button */
+#whatsappButton {
+    transition: transform 0.3s ease;
+}
+
+#whatsappButton:hover {
+    transform: scale(1.05);
+}
+
+#closeWhatsapp {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#whatsappButton:hover #closeWhatsapp {
+    opacity: 1;
+}
+
+/* Voucher Image */
+.voucher-image {
+    max-height: 180px;
+    width: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.voucher-image:hover {
+    transform: scale(1.05);
+}
+
+/* התאמה למובייל */
+@media (max-width: 768px) {
+    .benefits img {
+        max-height: 150px;
+    }
+    
+    .vanilla-calendar-day {
+        min-height: 50px;
+    }
+    
+    .vanilla-calendar-day__hebrew-date {
+        font-size: 0.6em;
+    }
+} 
