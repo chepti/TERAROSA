@@ -504,4 +504,28 @@ button:focus {
     .benefits .aspect-\[3\/2\] {
         height: 200px;
     }
+}
+
+.gallery-section:first-of-type .gallery-item {
+    height: 100%;
+}
+
+.gallery-section:first-of-type .gallery-item.vertical {
+    height: 100%;
+}
+
+.gallery-section:first-of-type .gallery-item img {
+    height: 100%;
+    object-fit: cover;
+}
+
+/* גלריה שניה ושלישית */
+.gallery-section:nth-of-type(n+2) .gallery-item.vertical img {
+    height: 50vh;
+    max-height: 600px;
+}
+
+.gallery-section:nth-of-type(n+2) .gallery-item:not(.vertical) img {
+    height: 25vh;
+    max-height: 300px;
 } 
