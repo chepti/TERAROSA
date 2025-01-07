@@ -8,15 +8,16 @@
 /* עיצוב גלריה */
 .gallery-section {
     padding: 2rem 0;
+    background-color: #fff;
 }
 
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    gap: 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
 }
 
 .gallery-item {
@@ -24,6 +25,7 @@
     overflow: hidden;
     border-radius: 0.5rem;
     cursor: pointer;
+    background-color: #f3f4f6;
 }
 
 .gallery-item.vertical {
@@ -41,9 +43,32 @@
     transform: scale(1.05);
 }
 
+/* גלריה שניה ושלישית */
+.gallery-section:nth-of-type(n+2) .gallery-item.vertical img {
+    height: 50vh;
+    max-height: 600px;
+}
+
+.gallery-section:nth-of-type(n+2) .gallery-item:not(.vertical) img {
+    height: 25vh;
+    max-height: 300px;
+}
+
 @media (max-width: 768px) {
     .gallery-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    .gallery-item.vertical img {
+        height: auto !important;
+        max-height: 70vh !important;
+    }
+
+    .gallery-item:not(.vertical) img {
+        height: auto !important;
+        max-height: 40vh !important;
     }
 }
 
@@ -322,9 +347,9 @@ button:focus {
 }
 
 .benefits img {
-    max-height: 180px;
-    width: auto;
-    object-fit: contain;
+    max-height: 140px;
+    width: 100%;
+    object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
@@ -424,7 +449,7 @@ button:focus {
 /* התאמה למובייל */
 @media (max-width: 768px) {
     .benefits img {
-        max-height: 150px;
+        max-height: 120px;
     }
     
     .vanilla-calendar-day {
